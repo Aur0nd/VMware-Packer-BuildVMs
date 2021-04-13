@@ -1,0 +1,79 @@
+{
+  "builders": [
+    {
+      "CPUs": "{{user `vm-cpu-num`}}",
+      "RAM": "{{user `vm-mem-size`}}",
+      "RAM_reserve_all": false,
+      "boot_command": [
+        "<esc><wait>",
+        "linux ks=hd:fd0:/ks.cfg ip=10.0.0.33 netmask=255.255.255.0<enter>"
+      ],
+      "boot_order": "disk,cdrom,floppy",
+	  "ip_wait_timeout": "1h30m",
+	  "host": "{{user `esxi_vsphere_host`}}",
+	  "shutdown_timeout": "30m",
+      "boot_wait": "10s",
+      "cluster": "{{user `vsphere-cluster`}}",
+      "convert_to_template": "{{user `template`}}",
+	  "vcenter_server": "{{user `vcenter_server`}}",
+      "datacenter": "{{user `vsphere-datacenter`}}",
+      "datastore": "{{user `vsphere-datastore`}}",
+      "disk_controller_type": "pvscsi",
+      "floppy_files": [
+        "ks.cfg"
+      ],
+      "guest_os_type": "{{user `guest_os_type`}}",
+      "insecure_connection": "true",
+      "iso_paths": [
+        "{{user `iso_url`}}"
+      ],
+      "network_adapters": [
+        {
+          "network": "{{user `vsphere-network`}}",
+          "network_card": "{{user `network_card`}}"
+        }
+      ],
+      "notes": "Build via Packer",
+      "password": "{{user `vsphere-password`}}",
+      "ssh_password": "{{user `ssh_password`}}",
+      "ssh_username": "{{user `ssh_username`}}",
+      "storage": [
+        {
+          "disk_size": "{{user `vm-disk-size`}}",
+          "disk_thin_provisioned": true
+        }
+      ],
+      "type": "vsphere-iso",
+      "username": "{{user `vsphere-user`}}",
+      "vm_name": "{{user `vm-name`}}"
+    }
+  ],
+  "provisioners": [
+    {
+	  "type": "shell",
+      "inline": [
+        "ls /"
+      ]
+    }
+  ],
+  "variables": {
+	"vsphere-user": "root",
+	"vsphere-server": "10.0.0.111",
+	"vsphere-password": "12345678",
+	"vcenter_server": "10.0.0.111",
+	"ssh_username": "root",
+	"ssh_password": "12345678",
+    "vsphere-datastore": "macmini-nas",
+    "vsphere-network": "VM Network",
+    "iso_url": "[macmini-nas] isos/rhel-server-7.4-x86_64-dvd.iso",
+	"guest_os_type": "rhel7_64Guest",
+    "vm-cpu-num": "2",
+    "vm-disk-size": "25600",
+    "vm-mem-size": "2048",
+    "vm-name": "Rhel7-Template",
+	"esxi_vsphere_host": "Its_Not_Working_but_Keep_it_Here",
+	"network_card": "vmxnet3",
+	"template": "false"
+  }
+}
+

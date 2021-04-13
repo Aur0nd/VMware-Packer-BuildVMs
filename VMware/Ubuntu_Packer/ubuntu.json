@@ -1,0 +1,100 @@
+{
+    "builders": [
+      {
+        "CPUs": "{{user `vm-cpu-num`}}",
+        "RAM": "{{user `vm-mem-size`}}",
+        "RAM_reserve_all": false,
+        "boot_command": [
+            "<enter><wait><f6><wait><esc><wait>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+            "<bs><bs><bs>",
+            "/install/vmlinuz",
+            " initrd=/install/initrd.gz",
+            " priority=critical",
+            " locale=en_US",
+            " file=/media/ks2.cfg",
+            " net.ifnames=0",
+            " auto-install/enable=true",
+            " ip=10.0.0.202",
+            " metmask=255.255.255.0",
+            "<enter>"
+          ],
+        "boot_order": "disk,cdrom,floppy",
+        "ip_wait_timeout": "2h",
+        "host": "{{user `esxi_vsphere_host`}}",
+        "shutdown_timeout": "30m",
+        "boot_wait": "10s",
+        "cluster": "{{user `vsphere-cluster`}}",
+        "convert_to_template": "{{user `template`}}",
+        "vcenter_server": "{{user `vcenter_server`}}",
+        "datacenter": "{{user `vsphere-datacenter`}}",
+        "datastore": "{{user `vsphere-datastore`}}",
+        "disk_controller_type": "pvscsi",
+        "floppy_files": [
+          "ks2.cfg"
+        ],
+        "guest_os_type": "{{user `guest_os_type`}}",
+        "insecure_connection": "true",
+        "iso_paths": [
+          "{{user `iso_url`}}"
+        ],
+        "network_adapters": [
+          {
+            "network": "{{user `vsphere-network`}}",
+            "network_card": "{{user `network_card`}}"
+          }
+        ],
+        "notes": "Build via Packer",
+        "password": "{{user `vsphere-password`}}",
+        "ssh_timeout": "60m",
+        "ssh_password": "{{user `ssh_password`}}",
+        "ssh_username": "{{user `ssh_username`}}",
+        "storage": [
+          {
+            "disk_size": "{{user `vm-disk-size`}}",
+            "disk_thin_provisioned": true
+          }
+        ],
+        "type": "vsphere-iso",
+        "username": "{{user `vsphere-user`}}",
+        "vm_name": "{{user `vm-name`}}"
+      }
+    ],
+    "provisioners": [
+      {
+        "type": "shell",
+        "inline": [
+          "sudo rm /etc/machine-id", 
+          "sudo touch /etc/machine-id"
+        ]
+      }
+    ],
+    "variables": {
+      "vsphere-user": "root",
+      "vsphere-server": "YourIPorDomain",
+      "vsphere-password": "Yunaki25%",
+      "vcenter_server": "YourIPorDomain",
+      "ssh_username": "packer",
+      "ssh_password": "12345678",
+      "vsphere-datastore": "macmini-nas",
+      "vsphere-network": "VM Network",
+      "iso_url": "[macmini-nas] isos/ubuntu-18.04.5-server-amd64.iso",
+      "guest_os_type": "ubuntu64Guest", 
+      "vm-cpu-num": "2",
+      "vm-disk-size": "40000",
+      "vm-mem-size": "4096",
+      "vm-name": "Ubuntu_Jenkins", 
+      "esxi_vsphere_host": "rhel.vsphere.test",
+      "network_card": "vmxnet3",
+      "template": "false"
+    }
+  }
+  
+  
