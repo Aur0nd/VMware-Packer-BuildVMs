@@ -79,7 +79,7 @@
     "variables": {
       "vsphere-user": "root",
       "vsphere-server": "YourIPorDomain",
-      "vsphere-password": "Yunaki25%",
+      "vsphere-password": "yuyu%",
       "vcenter_server": "YourIPorDomain",
       "ssh_username": "packer",
       "ssh_password": "12345678",
